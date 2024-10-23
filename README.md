@@ -30,14 +30,14 @@ sudo ssh-keygen -q -t rsa -N '' -f ~/.ssh/id_rsa <<<y >/dev/null 2>&1
 Execute the following commands to clone the repository and start the tool:
 ```bash
 git clone https://github.com/LightYagami28/Symbiote
-cd symbiote
+cd Symbiote
 python3 symbiote.py
 ```
 
 ### Step 3: Access Captured Data
 Once you have captured a cam file, you can view it using:
 ```bash
-cd symbiote/CapturedData
+cd Symbiote/CapturedData
 ls
 termux-open <file_name>
 ```
@@ -62,6 +62,12 @@ Ensure you have the following installed:
 
 ---
 
+## 💳 Credits
+This project is inspired by and built upon the original work by **[Hasan Firnas](https://github.com/hasanfirnas/symbiote)**. Special thanks for the foundational ideas and contributions.
+
+---
+
 <p align="center">
-  <b>Disclaimer:</b> This tool is intended for ethical hacking and educational purposes only. Misuse of this tool is strictly prohibited and the developer is not responsible for any illegal actions taken with it.
+  <b>Disclaimer:</b> This tool is intended for ethical hacking and educational purposes only. Misuse of this tool is strictly prohibited, and the developer is not responsible for any illegal actions taken with it.
 </p>
+
