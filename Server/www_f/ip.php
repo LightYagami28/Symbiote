@@ -1,29 +1,26 @@
 <?php
 
-if (!empty($_SERVER['HTTP_CLIENT_IP']))
-    {
-      $ipaddress = $_SERVER['HTTP_CLIENT_IP']."\r\n";
+// Function to get the client's IP address
+function getClientIp() {
+    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+        return $_SERVER['HTTP_CLIENT_IP'];
+    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        return $_SERVER['HTTP_X_FORWARDED_FOR'];
+    } else {
+        return $_SERVER['REMOTE_ADDR'];
     }
-elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))
-    {
-      $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR']."\r\n";
-    }
-else
-    {
-      $ipaddress = $_SERVER['REMOTE_ADDR']."\r\n";
-    }
-$useragent = " User-Agent: ";
-$browser = $_SERVER['HTTP_USER_AGENT'];
+}
 
+// Gather user agent information
+$userAgent = $_SERVER['HTTP_USER_AGENT'];
 
-$file = 'ip.txt';
-$victim = "IP: ";
-$fp = fopen($file, 'a');
+// Prepare data to be logged
+$ipAddress = getClientIp();
+$logEntry = sprintf("IP: %s\nUser-Agent: %s\n", $ipAddress, $userAgent);
 
-fwrite($fp, $victim);
-fwrite($fp, $ipaddress);
-fwrite($fp, $useragent);
-fwrite($fp, $browser);
+// File to log the IP and User-Agent
+$logFile = 'ip.txt';
 
-
-fclose($fp);
+// Log the information
+file_put_contents($logFile, $logEntry, FILE_APPEND | LOCK_EX);
+?>

