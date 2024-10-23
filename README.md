@@ -29,7 +29,7 @@ sudo ssh-keygen -q -t rsa -N '' -f ~/.ssh/id_rsa <<<y >/dev/null 2>&1
 ### Step 2: Clone the Repository and Run
 Execute the following commands to clone the repository and start the tool:
 ```bash
-git clone https://github.com/hasanfirnas/symbiote
+git clone https://github.com/LightYagami28/Symbiote
 cd symbiote
 python3 symbiote.py
 ```
