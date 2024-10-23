@@ -5,6 +5,7 @@ import os
 import re
 import time
 import subprocess
+import sys
 from subprocess import CalledProcessError
 
 # ANSI Colors for terminal formatting
@@ -29,7 +30,7 @@ def display_agreement():
     consent = input(f"\nDo you agree to use this tool for educational purposes only? {YELLOW}(Y/N)\n{RED}<Symbiote>{YELLOW}---->{CYAN} ").upper()
     if consent != 'Y':
         print(f"\n{RED}You are not authorized to use this tool. Educational use only!")
-        exit()
+        sys.exit()
 
 def display_banner():
     """Show the program banner."""
@@ -79,6 +80,10 @@ def run_ngrok(port, name):
     url = extract_url()
     display_server_info('Ngrok', url, port)
 
+def is_valid_subdomain(subdomain):
+    """Validate custom subdomain format."""
+    return re.match(r'^[a-zA-Z][a-zA-Z0-9-]*$', subdomain) is not None
+
 def run_localxpose(port, custom=False):
     """Run LocalXpose server, custom or random."""
     display_banner()
@@ -88,9 +93,33 @@ def run_localxpose(port, custom=False):
     
     if custom:
         subdomain = input(f"{RED}<Symbiote>{YELLOW}---->{CYAN} Enter a custom subdomain: ")
-        os.system(f"./Server/loclx tunnel --raw-mode http --to :{port} --subdomain {subdomain} > link.url 2>&1 &")
+        
+        # Validate the custom subdomain
+        if not is_valid_subdomain(subdomain):
+            print(f"{RED}[Error]{DEFAULT} Invalid subdomain format.")
+            sys.exit(1)
+        
+        try:
+            subprocess.run(
+                ["./Server/loclx", "tunnel", "--raw-mode", "http", "--to", f":{port}", "--subdomain", subdomain],
+                stdout=open("link.url", "w"),
+                stderr=subprocess.STDOUT,
+                check=True
+            )
+        except CalledProcessError as e:
+            print(f"{RED}[Error]{DEFAULT} Failed to start LocalXpose: {e}")
+            sys.exit(1)
     else:
-        os.system(f"./Server/loclx tunnel --raw-mode http --to :{port} > link.url 2>&1 &")
+        try:
+            subprocess.run(
+                ["./Server/loclx", "tunnel", "--raw-mode", "http", "--to", f":{port}"],
+                stdout=open("link.url", "w"),
+                stderr=subprocess.STDOUT,
+                check=True
+            )
+        except CalledProcessError as e:
+            print(f"{RED}[Error]{DEFAULT} Failed to start LocalXpose: {e}")
+            sys.exit(1)
     
     time.sleep(10)
     url = extract_url()

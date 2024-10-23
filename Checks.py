@@ -26,7 +26,7 @@ def check_internet_connection():
     else:
         print(f"\n{RED}[{CYAN}#{RED}] {GREEN}INTERNET {RED}- {GREEN}[{CYAN}NOT-CONNECTED{GREEN}]")
         print(f"{RED}[{CYAN}#{RED}] {CYAN}Turn on your internet connection\n\n{DEFAULT}")
-        exit()
+        sys.exit()  # Replaced exit() with sys.exit()
 
 # 🔄 Check for software updates
 def check_for_updates():
@@ -34,7 +34,7 @@ def check_for_updates():
         print(f"\n{RED}[{CYAN}#{RED}] {CYAN}Checking for updates...{DEFAULT}")
         response = requests.get(
             'https://raw.githubusercontent.com/hasanfirnas/symbiote/master/version.txt',
-            verify=False, timeout=2
+            timeout=2
         ).text.strip()
 
         with open("version.txt", "r") as f:
@@ -49,7 +49,7 @@ def check_for_updates():
             print(f"{RED}[{CYAN}#{RED}] {CYAN}Updating to the latest version... Please wait...{DEFAULT}")
             os.system('git fetch --quiet && git reset --hard origin/master --quiet && git pull --quiet')
             print(f"\n\n\n\t\t{CYAN}[{RED}#{CYAN}] {RED}Restart the program with -> {GREEN}python3 symbiote.py")
-            exit()
+            sys.exit()  # Replaced exit() with sys.exit()
     except Exception as e:
         print(f"{RED}[{CYAN}#{RED}] {RED}Error checking for updates: {str(e)}{DEFAULT}")
 
@@ -61,7 +61,7 @@ def check_jp2a():
     else:
         print(f"{RED}[{CYAN}*{RED}] {CYAN}JP2A not found. Installing...{DEFAULT}")
         os.system('apt-get install jp2a -y > /dev/null')
-        exit()
+        sys.exit()  # Replaced exit() with sys.exit()
 
 # 🌐 Check for wget installation
 def check_wget():
@@ -71,7 +71,7 @@ def check_wget():
     else:
         print(f"{RED}[{CYAN}*{RED}] {CYAN}WGET not found. Installing...{DEFAULT}")
         os.system('apt-get install wget -y > /dev/null')
-        exit()
+        sys.exit()  # Replaced exit() with sys.exit()
 
 # 🛠️ Check for PHP installation
 def check_php():
@@ -80,7 +80,7 @@ def check_php():
     else:
         print(f"{RED}[{CYAN}*{RED}] {CYAN}PHP not found. Installing...{DEFAULT}")
         os.system('apt-get install php -y > /dev/null')
-        exit()
+        sys.exit()  # Replaced exit() with sys.exit()
 
 # 🌍 Check for Ngrok installation and download if missing
 def check_ngrok():
@@ -94,7 +94,7 @@ def check_ngrok():
         os.system(f'unzip {filename} && mv ngrok Server/ngrok && rm {filename}')
         os.system('chmod +x ngrok')
         print(f"\n\n\n\t\t{CYAN}[{RED}#{CYAN}] {RED}Restart the program with -> {GREEN}python3 symbiote.py")
-        exit()
+        sys.exit()  # Replaced exit() with sys.exit()
     else:
         print(f"{RED}[{CYAN}*{RED}] {CYAN}Ngrok installation found...{DEFAULT}")
 
@@ -109,7 +109,7 @@ def check_localxpose():
         os.system(f'wget -4 {url}')
         os.system(f'unzip {filename} && mv loclx Server/loclx && rm {filename}')
         print(f"{GREEN}Localxpose setup completed!{DEFAULT}")
-        exit()
+        sys.exit()  # Replaced exit() with sys.exit()
     else:
         print(f"{RED}[{CYAN}*{RED}] {CYAN}Localxpose installation found...{DEFAULT}")
 
