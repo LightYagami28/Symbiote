@@ -1,7 +1,0 @@
-version: 2
-updates:
-  - package-ecosystem: "pip" # Specify the package ecosystem
-    versioning-strategy: "increase" # Optionally set the versioning strategy
-    directory: "/" # Location of your requirements file
-    schedule:
-      interval: "daily" # Update every day
